@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -72,6 +73,7 @@ class TextComposer extends StatefulWidget {
 }
 
 class _TextComposerState extends State<TextComposer> {
+  bool _isComposing = false;
   @override
   Widget build(BuildContext context) {
     return IconTheme(
@@ -82,20 +84,68 @@ class _TextComposerState extends State<TextComposer> {
             ? BoxDecoration(
                 border: Border(top: BorderSide(color: Colors.grey[200])))
             : null,
-        child: Row(
-          children: <Widget>[
-            Container(
-              child:
-                  IconButton(icon: Icon(Icons.photo_camera), onPressed: () {}),
-            ),
-            Expanded(
-                child: TextField(
-              decoration:
-                  InputDecoration.collapsed(hintText: "Enviar Mensagem"),
-            ))
-          ],
-        ),
+        child: Row(children: <Widget>[
+          Container(
+            child: IconButton(icon: Icon(Icons.photo_camera), onPressed: () {}),
+          ),
+          Expanded(
+              child: TextField(
+            decoration: InputDecoration.collapsed(hintText: "Enviar Mensagem"),
+            onChanged: (text) {
+              setState(() {
+                _isComposing = text.length > 0;
+              });
+            },
+          )),
+          Container(
+            margin: const EdgeInsets.symmetric(horizontal: 4.0),
+            child: Theme.of(context).platform == TargetPlatform.iOS
+                ? CupertinoButton(
+                    child: Text("Enviar"),
+                    onPressed: _isComposing ? () {} : null,
+                  )
+                : IconButton(
+                    icon: Icon(Icons.send),
+                    onPressed: _isComposing ? () {} : null,
+                  ),
+          ),
+        ]),
       ),
     );
   }
 }
+
+class ChatMenssage extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      margin: const EdgeInsets.symmetric(vertical: 10.0 ,horizontal: 10.0),
+      child: Row(
+          children: <Widget>[
+            Container(
+              margin: const EdgeInsets.only(right: 16),
+              child: CircleAvatar(
+                backgroundImage: NetworkImage("https://images.app.goo.gl/S8SHFYMKBsFd9wPV8"),
+              ),
+            ),
+            Expanded(
+              child: Column(
+                children: <Widget>[
+                  Text(
+                    "Rafael",
+                    style: Theme.of(context).textTheme.subhead,
+                    
+                  ),
+                  Container(
+                    margin: const EdgeInsets.only(top: 5.0),
+                    child: Text("testando"),
+                  )
+                ],
+              ),
+            )
+          ],
+      ),
+    );
+  }
+}
+
